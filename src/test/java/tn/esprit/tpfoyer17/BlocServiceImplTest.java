@@ -28,7 +28,7 @@ public class BlocServiceImplTest {
     @Order(1)
     public void testAjouterBlocAFoyerExistant() {
         // Récupérer un foyer existant (par exemple, avec l'ID 1)
-        long foyerId = 6; // Remplacez par un ID valide de foyer existant dans la base de données
+        long foyerId = 2; // Remplacez par un ID valide de foyer existant dans la base de données
         Foyer foyerExistant = foyerService.getFoyerById(foyerId);
 
         // Vérifier que le foyer existe
@@ -36,8 +36,8 @@ public class BlocServiceImplTest {
 
         // Créer un bloc à ajouter au foyer existant
         Bloc bloc = Bloc.builder()
-                .nomBloc("Bloc F")
-                .capaciteBloc(40)
+                .nomBloc("Bloc G")
+                .capaciteBloc(30)
                 .foyer(foyerExistant) // Affecter ce bloc au foyer existant
                 .build();
 
@@ -46,8 +46,8 @@ public class BlocServiceImplTest {
 
         // Vérifier que le bloc a bien été ajouté
         Assertions.assertNotNull(savedBloc.getIdBloc(), "L'ID du bloc ne doit pas être nul");
-        Assertions.assertEquals("Bloc F", savedBloc.getNomBloc());
-        Assertions.assertEquals(40, savedBloc.getCapaciteBloc());
+        Assertions.assertEquals("Bloc G", savedBloc.getNomBloc());
+        Assertions.assertEquals(30, savedBloc.getCapaciteBloc());
 
         // Vérifier que le bloc est bien affecté au foyer existant
         Assertions.assertEquals(foyerExistant.getIdFoyer(), savedBloc.getFoyer().getIdFoyer(),
