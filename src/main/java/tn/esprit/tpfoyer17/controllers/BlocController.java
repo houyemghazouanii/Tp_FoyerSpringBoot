@@ -31,7 +31,7 @@ public class BlocController {
     // Order 2
     @GetMapping("getAll")
     public List<Bloc> gettingAllBloc(){
-        return blocService.getAllBlocs();
+        log.info("getting all blocs");return blocService.getAllBlocs();
     }
 
     // Order 3
