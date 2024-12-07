@@ -73,7 +73,7 @@ public class EtudiantServiceImplTest {
         log.info("Début du test pour mettre à jour un étudiant.");
 
         // Récupérer un étudiant existant (par exemple, avec l'ID 1)
-        long etudiantId = 10;  // Remplacez par un ID valide d'un étudiant existant
+        long etudiantId = 11;  // Remplacez par un ID valide d'un étudiant existant
         Etudiant etudiant = etudiantService.getEtudiantById(etudiantId);
 
         // Vérifier que l'étudiant existe
