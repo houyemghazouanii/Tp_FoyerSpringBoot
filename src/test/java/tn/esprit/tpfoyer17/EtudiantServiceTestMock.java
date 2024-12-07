@@ -108,11 +108,16 @@ public class EtudiantServiceTestMock {
     void testDeleteEtudiant() {
         log.info("Démarrage du test de suppression d'étudiant");
 
+        // Mock du comportement du repository pour s'assurer que l'étudiant existe
+        lenient().when(etudiantRepository.findById(1L)).thenReturn(Optional.of(etudiant));
+
         // Appel de la méthode de service
         etudiantService.deleteEtudiant(1L);
 
-        // Vérification que la méthode du repository a été appelée
+        // Vérification que la méthode du repository a été appelée pour supprimer l'étudiant
         verify(etudiantRepository, times(1)).deleteById(1L);
         log.info("Test de suppression d'étudiant terminé");
     }
+
+
 }

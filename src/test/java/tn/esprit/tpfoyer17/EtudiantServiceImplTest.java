@@ -101,14 +101,22 @@ public class EtudiantServiceImplTest {
     public void testDeleteEtudiant() {
         log.info("Début du test pour supprimer un étudiant.");
 
-        // Supposons qu'un étudiant existe déjà dans la base de données avec un ID spécifique
-        long etudiantId = 10;  // L'ID de l'étudiant que vous souhaitez supprimer
+        // Ajouter un étudiant pour être sûr qu'il existe avant de le supprimer
+        Etudiant etudiant = Etudiant.builder()
+                .nomEtudiant("John")
+                .prenomEtudiant("Doe")
+                .cinEtudiant(98765432L)
+                .dateNaissance(new java.util.Date())
+                .build();
+
+        Etudiant savedEtudiant = etudiantService.addEtudiant(etudiant);
+        long etudiantId = savedEtudiant.getIdEtudiant(); // Récupérer l'ID de l'étudiant ajouté
+
+        log.info("Étudiant à supprimer : {}", savedEtudiant);
 
         // Vérifier que l'étudiant existe avant la suppression
         Etudiant existingEtudiant = etudiantRepository.findById(etudiantId).orElse(null);
         assertNotNull(existingEtudiant, "L'étudiant doit exister avant la suppression.");
-
-        log.info("Étudiant à supprimer : {}", existingEtudiant);
 
         // Supprimer l'étudiant
         etudiantService.deleteEtudiant(etudiantId);
@@ -119,4 +127,5 @@ public class EtudiantServiceImplTest {
 
         log.info("Étudiant supprimé avec succès.");
     }
+
 }
