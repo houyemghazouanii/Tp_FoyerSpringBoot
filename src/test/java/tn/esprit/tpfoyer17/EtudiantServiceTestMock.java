@@ -36,10 +36,13 @@ public class EtudiantServiceTestMock {
                 .cinEtudiant(12345678L)
                 .dateNaissance(new java.util.Date())
                 .build();
+        log.info("Étudiant initialisé : {}", etudiant);
     }
 
     @Test
     void testAddEtudiant() {
+        log.info("Démarrage du test d'ajout d'étudiant");
+
         // Mock du comportement du repository
         when(etudiantRepository.save(etudiant)).thenReturn(etudiant);
 
@@ -54,10 +57,13 @@ public class EtudiantServiceTestMock {
 
         // Vérification des appels au mock
         verify(etudiantRepository, times(1)).save(etudiant);
+        log.info("Test d'ajout d'étudiant terminé avec succès : {}", savedEtudiant);
     }
 
     @Test
     void testGetEtudiantById() {
+        log.info("Démarrage du test de récupération de l'étudiant par ID");
+
         // Mock du comportement du repository
         when(etudiantRepository.findById(1L)).thenReturn(Optional.of(etudiant));
 
@@ -72,10 +78,13 @@ public class EtudiantServiceTestMock {
 
         // Vérification des appels au mock
         verify(etudiantRepository, times(1)).findById(1L);
+        log.info("Test de récupération de l'étudiant par ID terminé : {}", foundEtudiant);
     }
 
     @Test
     void testUpdateEtudiant() {
+        log.info("Démarrage du test de mise à jour de l'étudiant");
+
         // Préparer les données de mise à jour
         etudiant.setNomEtudiant("Do Updated");
         etudiant.setPrenomEtudiant("Joo Updated");
@@ -92,14 +101,18 @@ public class EtudiantServiceTestMock {
 
         // Vérification des appels au mock
         verify(etudiantRepository, times(1)).save(etudiant);
+        log.info("Test de mise à jour de l'étudiant terminé : {}", updatedEtudiant);
     }
 
     @Test
     void testDeleteEtudiant() {
+        log.info("Démarrage du test de suppression d'étudiant");
+
         // Appel de la méthode de service
         etudiantService.deleteEtudiant(1L);
 
         // Vérification que la méthode du repository a été appelée
         verify(etudiantRepository, times(1)).deleteById(1L);
+        log.info("Test de suppression d'étudiant terminé");
     }
 }
