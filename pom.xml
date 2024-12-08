@@ -9,7 +9,7 @@
     </parent>
     <groupId>tn.esprit</groupId>
     <artifactId>tpFoyer-17</artifactId>
-    <version>1.0.0</version>   <!-- snapshot ou bien release -->
+    <version>0.0.1-SNAPSHOT</version>   <!-- snapshot ou bien release -->
     <name>tpFoyer-17</name>
     <description>tpFoyer-17</description>
     <properties>
