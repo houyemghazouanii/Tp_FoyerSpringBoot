@@ -25,7 +25,7 @@ public class FoyerServiceImplTest {
     public void testAddFoyer() {
         // Créer un nouvel foyer
         Foyer foyer = Foyer.builder()
-                .nomFoyer("Foyer D")
+                .nomFoyer("Foyer C")
                 .capaciteFoyer(100)
                 .build();
 
@@ -34,7 +34,7 @@ public class FoyerServiceImplTest {
 
         // Vérifier que l'ID du foyer n'est pas nul après la sauvegarde
         Assertions.assertNotNull(savedFoyer.getIdFoyer(), "L'ID du foyer ne doit pas être nul");
-        Assertions.assertEquals("Foyer D", savedFoyer.getNomFoyer());
+        Assertions.assertEquals("Foyer C", savedFoyer.getNomFoyer());
         Assertions.assertEquals(100, savedFoyer.getCapaciteFoyer());
     }
 
