@@ -20,16 +20,17 @@ public class EtudiantService implements IEtudiantService{
     @Override
     public Etudiant addEtudiant(Etudiant etudiant) {
         return etudiantRepository.save(etudiant);
-
-
+        
     }
     @Override
     public List<Etudiant> getAllEtudiants() {
         return (List<Etudiant>) etudiantRepository.findAll();
     }
     @Override
+
     public Etudiant getEtudiantById(long idEtudiant) {
-        return etudiantRepository.findById(idEtudiant).get();
+        return etudiantRepository.findById(idEtudiant)
+                .orElseThrow(() -> new RuntimeException("Etudiant non trouvé avec l'ID: " + idEtudiant));
     }
     @Override
     public void deleteEtudiant(long idEtudiant) {

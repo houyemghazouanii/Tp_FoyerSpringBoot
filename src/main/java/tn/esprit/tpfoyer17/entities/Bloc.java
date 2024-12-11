@@ -20,18 +20,30 @@ public class Bloc implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE) // Cette annotation assure que idBloc n'est pas modifiable via le setter
     long idBloc;
 
     String nomBloc;
 
     long capaciteBloc;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "foyer_id") // Spécifier explicitement le nom de la colonne
     @ToString.Exclude
-    @ManyToOne
     Foyer foyer;
 
+    @OneToMany(mappedBy = "bloc", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    @OneToMany(mappedBy = "bloc")
     Set<Chambre> chambres;
+
+    // Optionnel : Un constructeur personnalisé si nécessaire (par exemple, sans foyer et chambres)
+    public Bloc(String nomBloc, long capaciteBloc) {
+        this.nomBloc = nomBloc;
+        this.capaciteBloc = capaciteBloc;
+    }
+
+    // Utilisation du Builder pour construire un Bloc
+    public static class BlocBuilder {
+        // Votre code ici si vous avez besoin de personnaliser des méthodes de construction
+    }
 }
