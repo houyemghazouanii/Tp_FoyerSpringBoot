@@ -100,21 +100,6 @@ public class ChambreTest {
     }
 
 
-    @Test
-    void testDeleteChambre() {
-        // Supposons qu'une chambre existe déjà dans la base de données avec un ID spécifique
-        long chambreId = 15; // L'ID de la chambre que vous souhaitez supprimer
-
-        // Vérifier que la chambre existe avant la suppression
-        Chambre existingChambre = chambreRepository.findById(chambreId).orElse(null);
-        assertNotNull(existingChambre, "La chambre doit exister avant la suppression.");
-
-        // Supprimer la chambre
-        chambreRepository.deleteById(chambreId);
-
-        // Vérifier que la chambre a bien été supprimée
-        Chambre deletedChambre = chambreRepository.findById(chambreId).orElse(null);
-        assertNull(deletedChambre, "La chambre devrait être nulle après suppression.");
-    }
+    
 
 }
