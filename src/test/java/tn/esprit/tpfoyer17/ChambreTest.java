@@ -81,7 +81,7 @@ public class ChambreTest {
     @Order(3)
     public void testMiseAJourChambre() {
         // Récupérer une chambre existante
-        long chambreId = 10; // Remplacez par un ID valide d'une chambre existante
+        long chambreId = 13; // Remplacez par un ID valide d'une chambre existante
         Chambre chambre = chambreService.getChambreById(chambreId);
 
         // Vérifier que la chambre existe
@@ -103,7 +103,7 @@ public class ChambreTest {
     @Test
     void testDeleteChambre() {
         // Supposons qu'une chambre existe déjà dans la base de données avec un ID spécifique
-        long chambreId = 7; // L'ID de la chambre que vous souhaitez supprimer
+        long chambreId = 15; // L'ID de la chambre que vous souhaitez supprimer
 
         // Vérifier que la chambre existe avant la suppression
         Chambre existingChambre = chambreRepository.findById(chambreId).orElse(null);
