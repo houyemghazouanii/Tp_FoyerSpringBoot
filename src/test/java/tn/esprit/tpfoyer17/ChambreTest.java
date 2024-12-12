@@ -1,5 +1,6 @@
 package tn.esprit.tpfoyer17;
 
+import com.mysql.cj.log.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import tn.esprit.tpfoyer17.services.BlocService;
 import tn.esprit.tpfoyer17.services.ChambreService;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,6 +33,7 @@ public class ChambreTest {
     private ChambreRepository chambreRepository;
     @Autowired
     private BlocService blocService;
+    private Long idChambre;
 
     @Test
     @Order(1)
@@ -78,7 +81,7 @@ public class ChambreTest {
     @Order(3)
     public void testMiseAJourChambre() {
         // Récupérer une chambre existante
-        long chambreId = 5; // Remplacez par un ID valide d'une chambre existante
+        long chambreId = 10; // Remplacez par un ID valide d'une chambre existante
         Chambre chambre = chambreService.getChambreById(chambreId);
 
         // Vérifier que la chambre existe
@@ -96,10 +99,11 @@ public class ChambreTest {
         Assertions.assertEquals(TypeChambre.DOUBLE, updatedChambre.getTypeChambre());
     }
 
+
     @Test
     void testDeleteChambre() {
         // Supposons qu'une chambre existe déjà dans la base de données avec un ID spécifique
-        long chambreId = 8; // L'ID de la chambre que vous souhaitez supprimer
+        long chambreId = 7; // L'ID de la chambre que vous souhaitez supprimer
 
         // Vérifier que la chambre existe avant la suppression
         Chambre existingChambre = chambreRepository.findById(chambreId).orElse(null);
@@ -112,6 +116,5 @@ public class ChambreTest {
         Chambre deletedChambre = chambreRepository.findById(chambreId).orElse(null);
         assertNull(deletedChambre, "La chambre devrait être nulle après suppression.");
     }
-
 
 }
