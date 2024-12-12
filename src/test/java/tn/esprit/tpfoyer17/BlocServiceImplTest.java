@@ -13,6 +13,8 @@ import tn.esprit.tpfoyer17.services.BlocService;
 import tn.esprit.tpfoyer17.services.FoyerService;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.NoSuchElementException;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
@@ -53,4 +55,49 @@ public class BlocServiceImplTest {
         Assertions.assertEquals(foyerExistant.getIdFoyer(), savedBloc.getFoyer().getIdFoyer(),
                 "Le bloc doit être affecté au foyer existant avec l'ID " + foyerExistant.getIdFoyer());
     }
+
+    @Test
+    @Order(2)
+    public void testMettreAJourBloc() {
+        // Ajouter un bloc pour le mettre à jour (exemple avec l'ID 3)
+        long blocId = 3; // Remplacez par un ID valide de bloc existant
+        Bloc blocExistant = blocService.getBlocById(blocId);
+
+        // Vérifier que le bloc existe
+        Assertions.assertNotNull(blocExistant, "Le bloc avec l'ID " + blocId + " n'existe pas.");
+
+        // Modifier les propriétés du bloc
+        blocExistant.setNomBloc("Bloc H");
+        blocExistant.setCapaciteBloc(50);
+
+        // Sauvegarder les modifications
+        Bloc updatedBloc = blocService.updateBloc(blocExistant);
+
+        // Vérifier que les modifications ont été enregistrées
+        Assertions.assertEquals("Bloc H", updatedBloc.getNomBloc(), "Le nom du bloc n'a pas été mis à jour.");
+        Assertions.assertEquals(50, updatedBloc.getCapaciteBloc(), "La capacité du bloc n'a pas été mise à jour.");
+    }
+
+    @Test
+    @Order(3)
+    public void testSupprimerBloc() {
+        // Créer un nouveau bloc pour garantir qu'il existe dans la base de données
+        Bloc bloc = Bloc.builder()
+                .nomBloc("Bloc Temp")
+                .capaciteBloc(20)
+                .build();
+        Bloc savedBloc = blocService.addBloc(bloc);
+
+        // Vérifier que le bloc a bien été ajouté
+        Assertions.assertNotNull(savedBloc.getIdBloc(), "Le bloc n'a pas été correctement ajouté.");
+
+        // Supprimer le bloc
+        blocService.deleteBloc(savedBloc.getIdBloc());
+
+        // Vérifier que le bloc a bien été supprimé
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            blocService.getBlocById(savedBloc.getIdBloc());
+        }, "Le bloc avec l'ID " + savedBloc.getIdBloc() + " devrait être supprimé.");
+    }
+
 }
