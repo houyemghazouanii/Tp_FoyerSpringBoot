@@ -11,6 +11,7 @@ import tn.esprit.tpfoyer17.entities.Etudiant;
 import tn.esprit.tpfoyer17.repositories.EtudiantRepository;
 import tn.esprit.tpfoyer17.services.EtudiantService;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,11 +31,15 @@ public class EtudiantServiceTestMock {
 
     @BeforeEach
     void setUp() {
+        // Définir la date de naissance manuellement (par exemple, 1er juin 2000)
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2000, Calendar.JUNE, 1);  // Définir la date au 1er juin 2000
+
         etudiant = Etudiant.builder()
                 .nomEtudiant("Do")
                 .prenomEtudiant("Joo")
                 .cinEtudiant(12345678L)
-                .dateNaissance(new java.util.Date())
+                .dateNaissance(calendar.getTime())  // Utiliser la date définie
                 .build();
         log.info("Étudiant initialisé : {}", etudiant);
     }
@@ -59,6 +64,7 @@ public class EtudiantServiceTestMock {
         verify(etudiantRepository, times(1)).save(etudiant);
         log.info("Test d'ajout d'étudiant terminé avec succès : {}", savedEtudiant);
     }
+
 
     @Test
     void testGetEtudiantById() {
@@ -85,9 +91,19 @@ public class EtudiantServiceTestMock {
     void testUpdateEtudiant() {
         log.info("Démarrage du test de mise à jour de l'étudiant");
 
+        // Création d'un étudiant à tester
+        Etudiant etudiant = new Etudiant();
+        etudiant.setNomEtudiant("Do");
+        etudiant.setPrenomEtudiant("Joo");
+
         // Préparer les données de mise à jour
         etudiant.setNomEtudiant("Do Updated");
         etudiant.setPrenomEtudiant("Joo Updated");
+
+        // Définir une nouvelle date de naissance manuellement (par exemple, 1er janvier 2001)
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2001, Calendar.JANUARY, 1);  // Définir la date au 1er janvier 2001
+        etudiant.setDateNaissance(calendar.getTime());  // Appliquer la nouvelle date
 
         // Mock du comportement du repository
         when(etudiantRepository.save(etudiant)).thenReturn(etudiant);
@@ -99,10 +115,22 @@ public class EtudiantServiceTestMock {
         assertEquals("Do Updated", updatedEtudiant.getNomEtudiant(), "Le nom mis à jour doit correspondre.");
         assertEquals("Joo Updated", updatedEtudiant.getPrenomEtudiant(), "Le prénom mis à jour doit correspondre.");
 
+        // Vérification de la date de naissance
+        Calendar expectedDate = Calendar.getInstance();
+        expectedDate.set(2001, Calendar.JANUARY, 1);  // Date attendue
+        assertTrue(isSameDate(expectedDate.getTime(), updatedEtudiant.getDateNaissance()),
+                "La date de naissance mise à jour doit correspondre.");
+
         // Vérification des appels au mock
         verify(etudiantRepository, times(1)).save(etudiant);
         log.info("Test de mise à jour de l'étudiant terminé : {}", updatedEtudiant);
     }
+    private boolean isSameDate(java.util.Date expected, java.util.Date actual) {
+        long tolerance = 100;  // Tolérance de 100 millisecondes
+        return Math.abs(expected.getTime() - actual.getTime()) < tolerance;
+    }
+
+
 
     @Test
     void testDeleteEtudiant() {

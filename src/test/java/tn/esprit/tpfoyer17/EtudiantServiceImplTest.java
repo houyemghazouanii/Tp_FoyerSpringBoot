@@ -11,6 +11,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tn.esprit.tpfoyer17.entities.Etudiant;
 import tn.esprit.tpfoyer17.repositories.EtudiantRepository;
 import tn.esprit.tpfoyer17.services.EtudiantService;
+
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,12 +33,16 @@ public class EtudiantServiceImplTest {
     public void testAddEtudiant() {
         log.info("Début du test pour l'ajout d'un étudiant.");
 
-        // Créer un nouvel étudiant
+        // Créer une date de naissance manuelle (exemple : 15 janvier 1995)
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1995, Calendar.JANUARY, 15); // Mois commence à 0 (JANUARY = 0)
+
+        // Créer un nouvel étudiant avec une date de naissance manuelle
         Etudiant etudiant = Etudiant.builder()
                 .nomEtudiant("Adem")
                 .prenomEtudiant("Adem")
-                .cinEtudiant(12345678)
-                .dateNaissance(new java.util.Date())
+                .cinEtudiant(12378945)
+                .dateNaissance(calendar.getTime()) // Utiliser la date définie
                 .build();
 
         log.info("Étudiant à ajouter : {}", etudiant);
@@ -48,10 +54,11 @@ public class EtudiantServiceImplTest {
         assertNotNull(savedEtudiant.getIdEtudiant(), "L'ID de l'étudiant ne doit pas être nul");
         Assertions.assertEquals("Adem", savedEtudiant.getNomEtudiant());
         Assertions.assertEquals("Adem", savedEtudiant.getPrenomEtudiant());
-        Assertions.assertEquals(12345678L, savedEtudiant.getCinEtudiant());
+        Assertions.assertEquals(12378945L, savedEtudiant.getCinEtudiant());
 
         log.info("Étudiant ajouté avec succès : {}", savedEtudiant);
     }
+
 
     @Test
     @Order(2)
@@ -72,8 +79,8 @@ public class EtudiantServiceImplTest {
     public void testUpdateEtudiant() {
         log.info("Début du test pour mettre à jour un étudiant.");
 
-        // Récupérer un étudiant existant (par exemple, avec l'ID 1)
-        long etudiantId = 11;  // Remplacez par un ID valide d'un étudiant existant
+        // Récupérer un étudiant existant (par exemple, avec l'ID 11)
+        long etudiantId = 1; // Remplacez par un ID valide d'un étudiant existant
         Etudiant etudiant = etudiantService.getEtudiantById(etudiantId);
 
         // Vérifier que l'étudiant existe
@@ -85,6 +92,11 @@ public class EtudiantServiceImplTest {
         etudiant.setPrenomEtudiant("Cristine");
         etudiant.setCinEtudiant(147258);  // Mise à jour du CIN
 
+        // Définir une nouvelle date de naissance manuelle
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1990, Calendar.MAY, 25); // Exemple de date : 25 mai 1990
+        etudiant.setDateNaissance(calendar.getTime()); // Utiliser la nouvelle date de naissance
+
         // Sauvegarder les modifications
         Etudiant updatedEtudiant = etudiantService.updateEtudiant(etudiant);
 
@@ -92,33 +104,27 @@ public class EtudiantServiceImplTest {
         Assertions.assertEquals("Cristine", updatedEtudiant.getNomEtudiant());
         Assertions.assertEquals("Cristine", updatedEtudiant.getPrenomEtudiant());
         Assertions.assertEquals(147258, updatedEtudiant.getCinEtudiant());  // Vérification du CIN mis à jour
+        Assertions.assertEquals(calendar.getTime(), updatedEtudiant.getDateNaissance());  // Vérification de la date de naissance
 
         log.info("Étudiant mis à jour avec succès : {}", updatedEtudiant);
     }
+
 
     @Test
     @Order(4)
     public void testDeleteEtudiant() {
         log.info("Début du test pour supprimer un étudiant.");
 
-        // Ajouter un étudiant pour être sûr qu'il existe avant de le supprimer
-        Etudiant etudiant = Etudiant.builder()
-                .nomEtudiant("John")
-                .prenomEtudiant("Doe")
-                .cinEtudiant(98765432L)
-                .dateNaissance(new java.util.Date())
-                .build();
-
-        Etudiant savedEtudiant = etudiantService.addEtudiant(etudiant);
-        long etudiantId = savedEtudiant.getIdEtudiant(); // Récupérer l'ID de l'étudiant ajouté
-
-        log.info("Étudiant à supprimer : {}", savedEtudiant);
+        // Définir un ID d'étudiant existant (par exemple, 11)
+        long etudiantId = 2;  // Remplacer par un ID valide d'un étudiant existant
 
         // Vérifier que l'étudiant existe avant la suppression
         Etudiant existingEtudiant = etudiantRepository.findById(etudiantId).orElse(null);
         assertNotNull(existingEtudiant, "L'étudiant doit exister avant la suppression.");
 
-        // Supprimer l'étudiant
+        log.info("Étudiant à supprimer : {}", existingEtudiant);
+
+        // Supprimer l'étudiant en utilisant l'ID
         etudiantService.deleteEtudiant(etudiantId);
 
         // Vérifier que l'étudiant a bien été supprimé
@@ -127,5 +133,6 @@ public class EtudiantServiceImplTest {
 
         log.info("Étudiant supprimé avec succès.");
     }
+
 
 }
